@@ -2,11 +2,11 @@ const bodyParser = require('body-parser')
 require('./db/mongoose') 
 const express = require('express') 
 const path = require('path') 
-const main_router = require('./routers/main') 
-const score_router = require('./routers/score') 
+const main_router = require('./routers/main')
+const auth_router = require('./routers/auth')
 const cookieParser = require('cookie-parser') 
-const graphqlHTTP = require('express-graphql')
-const schema = require('./graphql/schema')
+/*const graphqlHTTP = require('express-graphql')
+const schema = require('./graphql/schema')*/
 const jwt = require('express-jwt') 
 
 
@@ -41,18 +41,17 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
 // parses cookies and gives an object req.cookies
 app.use(cookieParser()) 
 
-app.use(main_router) 
-app.use(score_router) 
+app.use(main_router)
+app.use(auth_router)
 
-
-app.use('/graphql', graphqlHTTP(req => ({
+/*app.use('/graphql', graphqlHTTP(req => ({
     schema: schema,
     graphiql: true,
     context: {
         user : req.user
     }
 }))
-)
+)*/
 
 
 module.exports = app;

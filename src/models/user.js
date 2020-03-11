@@ -23,23 +23,13 @@ const userSchema = new mongoose.Schema({
 			}
 		}
 	},
-	id_2: {
-		type: String,
-		trim: true,
-		validate: {
-			validator : function (id) {
-				if (id.length===0) return true ;
-				else return /201[0-9][A-Za-z0-9]{4}[0-9]{4}[pP]/.test(id)
-			}
-		}
-	},
 	score: {
 		type: Number,
 		default: 0
 	},
-	correctly_answered : [{
+/*	correctly_answered : [{
 		type: mongoose.Schema.Types.ObjectId,
-	}],
+	}],*/
 	tokens: [{
 		token: {
 			type: String,
