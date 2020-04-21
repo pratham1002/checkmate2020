@@ -348,8 +348,9 @@ function restart(){
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+const { username } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
-socket.emit('join', { username: "Player0", room: "room0" }, (error) => {
+socket.emit('join', { username, room: "room0" }, (error) => {
 	if (error) {
 		return console.log(error)
 	}
