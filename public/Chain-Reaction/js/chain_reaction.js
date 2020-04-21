@@ -349,3 +349,9 @@ function restart(){
 
 ////////////////////////////////////////////////////////////////////////////////
 
+socket.emit('join', { username: "Player0", room: "room0" }, (error) => {
+	if (error) {
+		return console.log(error)
+	}
+	console.log("Room Joined")
+})
