@@ -1,6 +1,9 @@
-const app = require('./app') ;
-const port = process.env.PORT || 3000;
+ 
+const { server } = require('./app')
+require('./chain-reaction')
 
-app.listen(port, ()=>{
-	console.log(`server is running on port : ${port}`) ;
-}) ;
+const port = process.env.PORT || 3000
+
+server.listen(port, () => {
+	console.log(`server is running on port : ${port}`) 
+}) 
