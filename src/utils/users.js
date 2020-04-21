@@ -40,10 +40,20 @@ const addUser = ({ id, username }) => {
 }
 
 const removeUser = (id) => {
-    const index = users.findIndex((user) => user.id === id)
+    let index = users.findIndex((user) => user.id === id)
 
     if (index !== -1) {
         return users.splice(index, 1)[0]
+    }
+
+    index = pairedUsers.findIndex((user) => user.id === id)
+    if (index !== -1) {
+        const removedUser = pairedUsers.splice(index, 1)[0]
+        const room = removedUser.room
+        const pairIndex = pairedUsers.findIndex((user) => user.room === room)
+        const removedPairUser = pairedUsers.splice(pairIndex, 1)[0]
+        users.push(removedPairUser)
+        return removedUser
     }
 }
 
@@ -53,12 +63,22 @@ const getUser = (id) => {
 
 const getUsersInRoom = (room) => {
     room = room.trim().toLowerCase()
-    return users.filter((user) => user.room === room)
+    return pairedUsers.filter((user) => user.room === room)
+}
+
+const getPairedUsers = () => {
+    return pairedUsers
+}
+
+const getUnpairedUsers = () => {
+    return users
 }
 
 module.exports = {
     addUser,
     removeUser,
     getUser,
-    getUsersInRoom
+    getUsersInRoom,
+    getPairedUsers,
+    getUnpairedUsers
 }
