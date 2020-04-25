@@ -16,6 +16,11 @@ io.on('connection', (socket) => {
         callback()
     })
 
+    socket.on('click', (info, player) => {
+        const user = getUser(socket.id)
+        io.to(user.room).emit('move', info, player)
+    })
+
     socket.on('disconnect', () => {
         const user = removeUser(socket.id)
         console.log('Paired', getPairedUsers())

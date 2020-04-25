@@ -1,4 +1,6 @@
 const socket = io()
+// let freezeClic = false
+// let sendClic = false
 
 let row=6,col=11,total_players=2,count_moves=0,hidden_move=0,orb_no=0,player,bg_color,score=[0,0],clicks=0;
 let bool,existing_div,matches,prev_parent_id,living_players=[0],current_status=[];
@@ -60,8 +62,11 @@ function start(){
             {
                 grid[row_entry][col_entry]=null;
                 let div=document.createElement('div');
-                div.setAttribute('id','r' + row_entry +'c' + col_entry);
-                div.addEventListener("click",() =>move(div.id,'player'+count_moves%total_players,false))
+				div.setAttribute('id','r' + row_entry +'c' + col_entry); 
+                div.addEventListener("click",() => {
+					socket.emit('click', div.id, count_moves%total_players)
+					
+				})
                 document.getElementsByClassName('container')[0].appendChild(div);
 				cssMulti('r' + row_entry +'c' + col_entry,{'grid-column': col_entry+1 , 'grid-row': row_entry+1}) 
 				              
@@ -355,4 +360,44 @@ socket.emit('join', { username }, (error) => {
 		return console.log(error)
 	}
 	console.log("Room Joined")
+	
 })
+
+socket.on('move',  (grid, player) => {
+	try {
+		move(grid,'player'+player,false)
+	} catch (e) {
+		console.log(e)
+	}
+
+})
+// window.onclick = e => {
+//     if (sendClic) {
+//         freezeClic=true
+
+//     document.addEventListener("click", freezeClicFn, true);
+
+//     console.log('frozen')
+
+//     var current_player = parseInt(document.getElementById('pl-no').innerHTML)
+
+//     if (current_player === opponent)   // replace 1 by opponent user
+//         return
+
+//     console.log('sending ')
+
+//     console.log(e.target.id);
+//     socket.emit('play', current_player, username, e.target.id, (error) => {
+//         if (error) {
+//             console.log(error)
+//         }
+//     })
+//     }
+// }
+
+// function freezeClicFn(e) {
+//     if (freezeClic) {
+//         e.stopPropagation();
+//         e.preventDefault();
+//     }
+// }

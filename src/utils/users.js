@@ -58,7 +58,11 @@ const removeUser = (id) => {
 }
 
 const getUser = (id) => {
-    return users.find((user) => user.id === id)
+    const pairedUser = pairedUsers.find((user) => user.id === id)
+    if (!pairedUser) {
+        return users.find((user) => user.id === id)
+    }
+    return pairedUser
 }
 
 const getUsersInRoom = (room) => {
