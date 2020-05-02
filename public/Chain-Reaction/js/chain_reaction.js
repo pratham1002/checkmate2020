@@ -1,7 +1,5 @@
 const socket = io()
-// let freezeClic = false
-// let sendClic = false
-
+let valid_move = { value: true }
 let row=6,col=11,total_players=2,count_moves=0,hidden_move=0,orb_no=0,player,bg_color,score=[0,0],clicks=0;
 let bool,existing_div,matches,prev_parent_id,living_players=[0],current_status=[];
 let game_over=[],p1=0,p0=0;
@@ -53,6 +51,10 @@ function start(){
 	if(window.innerWidth<window.innerHeight)
 		alert("Please play the game in Landscape View.")
 	// screen.orientation.lock('landscape');
+
+	// socket.emit('pair', (count_moves) => {
+	// 	count_moves = count_moves
+	// })
 	document.getElementsByClassName('container')[0].style.visibility="visible" ;
 	document.getElementsByClassName('players')[0].style.visibility="visible" ;
 
@@ -64,7 +66,11 @@ function start(){
                 let div=document.createElement('div');
 				div.setAttribute('id','r' + row_entry +'c' + col_entry); 
                 div.addEventListener("click",() => {
-					socket.emit('click', div.id, count_moves%total_players)
+					socket.emit('click', div.id, count_moves%total_players, () => {
+						console.log("move " + valid_move.value)
+						socket.emit('freeze', valid_move.value)
+					})
+					
 					
 				})
                 document.getElementsByClassName('container')[0].appendChild(div);
@@ -85,9 +91,13 @@ function move(id,player,bool,random){
     player_num = player.match(/\d+/g);
     let c=document.getElementById(id).className;
     if(c==null || c==0 || c=='player'+player_num || bool ){
-		if(!(bool))
+		if(!(bool)) {
 			count_moves++;
-
+			valid_move.value = true
+		}
+		else {
+			valid_move.value = false
+		}
 		orb_no++;
 		color=get_color(id,player,bool,+player_num[0]);
 		orb_color=color.orb_color;
@@ -105,8 +115,17 @@ function move(id,player,bool,random){
 		let container=document.getElementsByClassName('container')[0];
 		container.style.background=bg_color;
 		container.style.border="0.2em solid "+bg_color;
-
+		return new Promise((resolve, reject) => {
+			resolve(valid_move.value)
+		})
 		// setInterval(move,2000,id,'player'+count_moves%total_players,false);
+	}
+	else {
+		console.log("enter else block which sets valid_move to false")
+		valid_move.value = false
+		return new Promise((resolve, reject) => {
+			resolve(valid_move.value)
+		})
 	}
 }
 
@@ -366,10 +385,20 @@ socket.emit('join', { username }, (error) => {
 socket.on('move',  (grid, player) => {
 	try {
 		move(grid,'player'+player,false)
+		console.log(count_moves)
 	} catch (e) {
 		console.log(e)
 	}
+})
 
+socket.on('unfreezeOpponent', () => {
+	console.log("unfreqq")
+	document.getElementsByClassName('container')[0].style.pointerEvents = "auto";
+})
+
+socket.on('freezePlayer', () => {
+	console.log("frwew")
+	document.getElementsByClassName('container')[0].style.pointerEvents = "none";
 })
 // window.onclick = e => {
 //     if (sendClic) {

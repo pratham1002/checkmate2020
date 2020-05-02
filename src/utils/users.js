@@ -34,7 +34,7 @@ const addUser = ({ id, username }) => {
     }
 
     // Store user
-    const user = { id, username, room: id }
+    const user = { id, username, room: id + 'fg' }
     users.push(user)
     return { user }
 }
@@ -65,6 +65,21 @@ const getUser = (id) => {
     return pairedUser
 }
 
+const isPaired = (id) => {
+    const pairedUser = pairedUsers.find((user) => user.id === id)
+    if (!pairedUser) {
+        return false
+    }
+    return true
+}
+
+const getOpponent = (id) => {
+    const pairedUser = pairedUsers.find((user) => user.id === id)
+    const opponent = pairedUsers.find((user) => {
+        return user.room === pairedUser.room && user.id != id
+    })
+    return opponent
+}
 const getUsersInRoom = (room) => {
     room = room.trim().toLowerCase()
     return pairedUsers.filter((user) => user.room === room)
@@ -82,6 +97,8 @@ module.exports = {
     addUser,
     removeUser,
     getUser,
+    isPaired,
+    getOpponent,
     getUsersInRoom,
     getPairedUsers,
     getUnpairedUsers
