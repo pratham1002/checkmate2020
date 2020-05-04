@@ -3,6 +3,7 @@ const router = new express.Router();
 const User = require('../models/user');
 const path = require('path') ;
 
+
 const views = path.join(__dirname, '../../public') ;
 
 router.get('/logout/', (req, res)=>{
@@ -22,5 +23,6 @@ router.post('/logout/', async (req, res)=>{
 })
 
 // TODO:Add routers for Login and Registration [POST Request] here
+
 
 module.exports = router;

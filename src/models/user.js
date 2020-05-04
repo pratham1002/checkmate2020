@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
 	},
 	id_1: {
 		type: String,
-		required: true,
 		trim: true,
 		validate: {
 			validator : function (id) {

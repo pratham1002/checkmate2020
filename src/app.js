@@ -4,6 +4,7 @@ const express = require('express')
 const path = require('path') 
 const main_router = require('./routers/main')
 const auth_router = require('./routers/auth')
+const oauth2_router = require("./routers/bitsmail-oauth2")
 const cookieParser = require('cookie-parser') 
 /*const graphqlHTTP = require('express-graphql')
 const schema = require('./graphql/schema')*/
@@ -14,8 +15,6 @@ const socketio = require("socket.io")
 const app = express() 
 const server = http.createServer(app)
 const io = socketio(server)
-
-// require("./tic-tac-toe")
 
 const publicDirectoryPath = path.join(__dirname, '../public') 
 
@@ -48,6 +47,7 @@ app.use(cookieParser())
 
 app.use(main_router)
 app.use(auth_router)
+app.use(oauth2_router)
 
 /*app.use('/graphql', graphqlHTTP(req => ({
     schema: schema,
