@@ -8,9 +8,14 @@ const cookieParser = require('cookie-parser')
 /*const graphqlHTTP = require('express-graphql')
 const schema = require('./graphql/schema')*/
 const jwt = require('express-jwt') 
-
+const http =require('http')
+const socketio = require("socket.io")
 
 const app = express() 
+const server = http.createServer(app)
+const io = socketio(server)
+
+// require("./tic-tac-toe")
 
 const publicDirectoryPath = path.join(__dirname, '../public') 
 
@@ -54,4 +59,4 @@ app.use(auth_router)
 )*/
 
 
-module.exports = app;
+module.exports = {server,io};

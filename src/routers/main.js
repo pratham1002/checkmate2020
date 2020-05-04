@@ -29,5 +29,9 @@ router.get('/register', (req, res)=>{
 	res.render('/register')
 })
 
+router.get("/tic-tac-toe", (req,res) => {
+	res.render("tic-tac-toe/index")
+})
+
 
 module.exports = router 

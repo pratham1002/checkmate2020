@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue|Ubuntu&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="heading">TIC TAC TOE</div>
+        <div class="other-elem">
+            <div class="player">
+                PLAYER- 
+                <div id="pl-no">1</div>
+            </div>
+            <svg class="player-img" >
+                <rect  rx="5" ry="5" class="dash0"
+                style="fill:none;" />
+
+            </svg>
+        </div>
+        <div class="box">
+            <div class="big-row" onmouseover="big_row(0)">
+                <div class="small-box" onmouseover="small_box(0)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="0000" onclick="space(0)"></div>
+                        <div class="space" id="0001" onclick="space(1)"></div>
+                        <div class="space" id="0002" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="0010" onclick="space(0)"></div>
+                        <div class="space" id="0011" onclick="space(1)"></div>
+                        <div class="space" id="0012" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="0020" onclick="space(0)"></div>
+                        <div class="space" id="0021" onclick="space(1)"></div>
+                        <div class="space" id="0022" onclick="space(2)"></div>
+                    </div>
+                </div>
+
+
+
+                <div class="small-box" onmouseover="small_box(1)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="0100" onclick="space(0)"></div>
+                        <div class="space" id="0101" onclick="space(1)"></div>
+                        <div class="space" id="0102" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="0110" onclick="space(0)"></div>
+                        <div class="space" id="0111" onclick="space(1)"></div>
+                        <div class="space" id="0112" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="0120" onclick="space(0)"></div>
+                        <div class="space" id="0121" onclick="space(1)"></div>
+                        <div class="space" id="0122" onclick="space(2)"></div>
+                    </div>
+                </div>
+
+
+
+                <div class="small-box" onmouseover="small_box(2)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="0200" onclick="space(0)"></div>
+                        <div class="space" id="0201" onclick="space(1)"></div>
+                        <div class="space" id="0202" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="0210" onclick="space(0)"></div>
+                        <div class="space" id="0211" onclick="space(1)"></div>
+                        <div class="space" id="0212" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="0220" onclick="space(0)"></div>
+                        <div class="space" id="0221" onclick="space(1)"></div>
+                        <div class="space" id="0222" onclick="space(2)"></div>
+                    </div>
+                </div>
+                
+            </div>
+
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+            <div class="big-row" onmouseover="big_row(1)">
+                <div class="small-box" onmouseover="small_box(0)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="1000" onclick="space(0)"></div>
+                        <div class="space" id="1001" onclick="space(1)"></div>
+                        <div class="space" id="1002" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="1010" onclick="space(0)"></div>
+                        <div class="space" id="1011" onclick="space(1)"></div>
+                        <div class="space" id="1012" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="1020" onclick="space(0)"></div>
+                        <div class="space" id="1021" onclick="space(1)"></div>
+                        <div class="space" id="1022" onclick="space(2)"></div>
+                    </div>
+                </div>
+
+
+
+                <div class="small-box" onmouseover="small_box(1)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="1100" onclick="space(0)"></div>
+                        <div class="space" id="1101" onclick="space(1)"></div>
+                        <div class="space" id="1102" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="1110" onclick="space(0)"></div>
+                        <div class="space" id="1111" onclick="space(1)"></div>
+                        <div class="space" id="1112" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="1120" onclick="space(0)"></div>
+                        <div class="space" id="1121" onclick="space(1)"></div>
+                        <div class="space" id="1122" onclick="space(2)"></div>
+                    </div>
+                </div>
+
+
+
+                <div class="small-box" onmouseover="small_box(2)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="1200" onclick="space(0)"></div>
+                        <div class="space" id="1201" onclick="space(1)"></div>
+                        <div class="space" id="1202" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="1210" onclick="space(0)"></div>
+                        <div class="space" id="1211" onclick="space(1)"></div>
+                        <div class="space" id="1212" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="1220" onclick="space(0)"></div>
+                        <div class="space" id="1221" onclick="space(1)"></div>
+                        <div class="space" id="1222" onclick="space(2)"></div>
+                    </div>
+                </div>
+                
+            </div>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+            <div class="big-row" onmouseover="big_row(2)">
+                <div class="small-box" onmouseover="small_box(0)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="2000" onclick="space(0)"></div>
+                        <div class="space" id="2001" onclick="space(1)"></div>
+                        <div class="space" id="2002" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="2010" onclick="space(0)"></div>
+                        <div class="space" id="2011" onclick="space(1)"></div>
+                        <div class="space" id="2012" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="2020" onclick="space(0)"></div>
+                        <div class="space" id="2021" onclick="space(1)"></div>
+                        <div class="space" id="2022" onclick="space(2)"></div>
+                    </div>
+                </div>
+
+
+
+                <div class="small-box" onmouseover="small_box(1)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="2100" onclick="space(0)"></div>
+                        <div class="space" id="2101" onclick="space(1)"></div>
+                        <div class="space" id="2102" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="2110" onclick="space(0)"></div>
+                        <div class="space" id="2111" onclick="space(1)"></div>
+                        <div class="space" id="2112" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="2120" onclick="space(0)"></div>
+                        <div class="space" id="2121" onclick="space(1)"></div>
+                        <div class="space" id="2122" onclick="space(2)"></div>
+                    </div>
+                </div>
+
+
+
+                <div class="small-box" onmouseover="small_box(2)">
+                    <div class="small-row" onmouseover="small_row(0)">
+                        <div class="space" id="2200" onclick="space(0)"></div>
+                        <div class="space" id="2201" onclick="space(1)"></div>
+                        <div class="space" id="2202" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(1)">
+                        <div class="space" id="2210" onclick="space(0)"></div>
+                        <div class="space" id="2211" onclick="space(1)"></div>
+                        <div class="space" id="2212" onclick="space(2)"></div>
+                    </div>
+                    <div class="small-row" onmouseover="small_row(2)">
+                        <div class="space" id="2220" onclick="space(0)"></div>
+                        <div class="space" id="2221" onclick="space(1)"></div>
+                        <div class="space" id="2222" onclick="space(2)"></div>
+                    </div>
+                </div>
+                
+            </div>
+                
+            </div>
+
+            
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <!--
+        
+    
+    
+    -->
+    
+</body>
