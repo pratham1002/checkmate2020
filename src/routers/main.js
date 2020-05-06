@@ -20,15 +20,6 @@ router.get('/instructions', (req, res)=>{
 })
 
 
-router.get('/login', (req, res)=>{
-	res.render('login')
-})
-
-
-router.get('/register', (req, res)=>{
-	res.render('/register')
-})
-
 router.get("/tic-tac-toe", (req,res) => {
 	res.render("tic-tac-toe/index")
 })
