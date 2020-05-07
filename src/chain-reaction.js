@@ -10,19 +10,24 @@ io.on('connection', (socket) => {
             return callback(error)
         }
         
-        // if (isPaired(socket.id)) {
-        //     const opponent = getOpponent(socket.id)
-        // }   
-        // else {
-        //     console.log("Waiting for opponent")
-        // }
-
         socket.join(user.room)
         console.log('Paired', getPairedUsers())
         console.log('Unpaired', getUnpairedUsers())
         callback()
     })
 
+    socket.on('pair', (callback) => {
+        if (isPaired(socket.id)) {
+            callback(true)
+            const opponent = getOpponent(socket.id)
+            io.to(opponent.id).emit('start')
+            io.to(opponent.id).emit('freezePlayer')
+            
+        }
+        else {
+            callback(false)
+        }
+    })
     socket.on('click', (grid, player, callback) => {
         const user = getUser(socket.id)
         io.in(user.room).emit('move', grid, player)

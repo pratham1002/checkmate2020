@@ -47,6 +47,36 @@ function show_instructions(){
 
 ////////////////////////////////////////////////////////////////////////////////
 
+start_function = () =>	{
+	document.getElementsByClassName('container')[0].style.visibility="visible" ;
+	document.getElementsByClassName('players')[0].style.visibility="visible" ;
+
+	for(let row_entry=0; row_entry<row; row_entry++)
+		{
+			for(let col_entry=0; col_entry<col; col_entry++)
+			{
+				grid[row_entry][col_entry]=null;
+				let div=document.createElement('div');
+				div.setAttribute('id','r' + row_entry +'c' + col_entry); 
+				div.addEventListener("click",() => {
+					socket.emit('click', div.id, count_moves%total_players, () => {
+						console.log("move " + valid_move.value)
+						socket.emit('freeze', valid_move.value)
+					})
+					
+					
+				})
+				document.getElementsByClassName('container')[0].appendChild(div);
+				cssMulti('r' + row_entry +'c' + col_entry,{'grid-column': col_entry+1 , 'grid-row': row_entry+1}) 
+							
+			}
+		}
+		setTimeout(()=>{document.getElementsByClassName('container')[0].style.zIndex="1";} ,2000) 
+		document.getElementById('modal').style.transform="translateY(-100vh)" ;
+		let elem = document.documentElement;
+		openFullscreen(elem);
+}
+
 function start(){
 	if(window.innerWidth<window.innerHeight)
 		alert("Please play the game in Landscape View.")
@@ -55,33 +85,17 @@ function start(){
 	// socket.emit('pair', (count_moves) => {
 	// 	count_moves = count_moves
 	// })
-	document.getElementsByClassName('container')[0].style.visibility="visible" ;
-	document.getElementsByClassName('players')[0].style.visibility="visible" ;
-
-    for(let row_entry=0; row_entry<row; row_entry++)
-        {
-            for(let col_entry=0; col_entry<col; col_entry++)
-            {
-                grid[row_entry][col_entry]=null;
-                let div=document.createElement('div');
-				div.setAttribute('id','r' + row_entry +'c' + col_entry); 
-                div.addEventListener("click",() => {
-					socket.emit('click', div.id, count_moves%total_players, () => {
-						console.log("move " + valid_move.value)
-						socket.emit('freeze', valid_move.value)
-					})
-					
-					
-				})
-                document.getElementsByClassName('container')[0].appendChild(div);
-				cssMulti('r' + row_entry +'c' + col_entry,{'grid-column': col_entry+1 , 'grid-row': row_entry+1}) 
-				              
-            }
+	let is_paired = false
+	socket.emit('pair', (bool) => {
+		is_paired = bool
+		console.log("Paired ", is_paired)
+		if (is_paired) {
+			start_function()
 		}
-    	setTimeout(()=>{document.getElementsByClassName('container')[0].style.zIndex="1";} ,2000) 
-		document.getElementById('modal').style.transform="translateY(-100vh)" ;
-		let elem = document.documentElement;
-		openFullscreen(elem);
+		else {
+			console.log("Waiting to pair")
+		}
+	})
 
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -382,6 +396,10 @@ socket.emit('join', { username }, (error) => {
 	
 })
 
+socket.on('start', () => {
+	start_function()
+})
+
 socket.on('move',  (grid, player) => {
 	try {
 		move(grid,'player'+player,false)
@@ -392,41 +410,11 @@ socket.on('move',  (grid, player) => {
 })
 
 socket.on('unfreezeOpponent', () => {
-	console.log("unfreqq")
+	console.log("unfreeze, make your move")
 	document.getElementsByClassName('container')[0].style.pointerEvents = "auto";
 })
 
 socket.on('freezePlayer', () => {
-	console.log("frwew")
+	console.log("freeze, waiting for opponent's move")
 	document.getElementsByClassName('container')[0].style.pointerEvents = "none";
 })
-// window.onclick = e => {
-//     if (sendClic) {
-//         freezeClic=true
-
-//     document.addEventListener("click", freezeClicFn, true);
-
-//     console.log('frozen')
-
-//     var current_player = parseInt(document.getElementById('pl-no').innerHTML)
-
-//     if (current_player === opponent)   // replace 1 by opponent user
-//         return
-
-//     console.log('sending ')
-
-//     console.log(e.target.id);
-//     socket.emit('play', current_player, username, e.target.id, (error) => {
-//         if (error) {
-//             console.log(error)
-//         }
-//     })
-//     }
-// }
-
-// function freezeClicFn(e) {
-//     if (freezeClic) {
-//         e.stopPropagation();
-//         e.preventDefault();
-//     }
-// }
