@@ -4,6 +4,8 @@ let row=6,col=11,total_players=2,count_moves=0,hidden_move=0,orb_no=0,player,bg_
 let bool,existing_div,matches,prev_parent_id,living_players=[0],current_status=[];
 let game_over=[],p1=0,p0=0;
 let grid=[];
+let opponent = { id: 0 };
+let flag = 0;
 for(let r=0; r<row; r++)
     grid[r]=[];
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,11 +84,9 @@ function start(){
 		alert("Please play the game in Landscape View.")
 	// screen.orientation.lock('landscape');
 
-	// socket.emit('pair', (count_moves) => {
-	// 	count_moves = count_moves
-	// })
 	let is_paired = false
-	socket.emit('pair', (bool) => {
+	socket.emit('pair', (bool, id) => {
+		opponent.id = id
 		is_paired = bool
 		console.log("Paired ", is_paired)
 		if (is_paired) {
@@ -334,6 +334,14 @@ function delete_orbs(id,parentDiv,player){
 	
 	}
 ////////////////////////////////////////////////////////////////////////////////
+
+socket.on('start', (opponent_id) => {
+	opponent.id = opponent_id
+	console.log(opponent.id)
+	start_function()
+})
+
+///////////////////////////////////////////////////////////////////////////////
 function check(count_moves,player){
     for(let row_entry=0; row_entry<row; row_entry++)
         {current_status[row_entry]=[]
@@ -362,6 +370,16 @@ function check(count_moves,player){
 					document.getElementsByClassName('container')[0].style.zIndex="0";
 					cssMulti('over',{'visibility':"visible",'z-index':"9999",'transform':'translateY(-100vh)',  'transition': 'transform 1s'})
 					winner=player.match(/\d+/g);
+					console.log(winner)
+					if (winner[0] == '0' && flag == 0) {
+						flag += 1
+						socket.emit('winner', opponent.id, false)
+					}
+					else if (winner[0] == '1' && flag == 0) {
+						flag += 1
+						socket.emit('winner', opponent.id, true)
+					}
+					
 					document.getElementById('winner').innerHTML='Player '+(+winner[0]+1)+' Wins!'
 				}
 					p0=0;p1=0;game_over=[];
@@ -396,9 +414,6 @@ socket.emit('join', { username }, (error) => {
 	
 })
 
-socket.on('start', () => {
-	start_function()
-})
 
 socket.on('move',  (grid, player) => {
 	try {
