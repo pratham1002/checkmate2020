@@ -15,8 +15,8 @@ const userSchema = new mongoose.Schema({
 	},
 	id_1: {
 		type: String,
-		required: true,
 		trim: true,
+		required: true,
 		validate: {
 			validator : function (id) {
 				return /201[0-9][A-Za-z0-9]{4}[0-9]{4}[pP]/.test(id)
@@ -27,7 +27,11 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
-/*	correctly_answered : [{
+	room: {
+		type: String,
+		default: ""
+	},
+	/*	correctly_answered : [{
 		type: mongoose.Schema.Types.ObjectId,
 	}],*/
 	tokens: [{
@@ -38,6 +42,22 @@ const userSchema = new mongoose.Schema({
 }, {
 	timestamps: true
 })
+
+userSchema.statics.findByCredentials = async (username, password) => {
+    const user = await User.findOne({username})
+
+    if(!user){
+        throw new Error("Unable to login.")
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if(!isMatch){
+        throw new Error("Unable to login.")
+    }
+
+    return user
+}
 
 userSchema.pre('save', async function (next) {
 	const user = this 

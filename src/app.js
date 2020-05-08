@@ -1,3 +1,9 @@
+const AdminBro = require('admin-bro')
+const AdminBroExpress = require('admin-bro-expressjs')
+const AdminBroMongoose = require('admin-bro-mongoose')
+
+const User = require('./models/user')
+
 const bodyParser = require('body-parser') 
 require('./db/mongoose')
 const express = require('express') 
@@ -8,11 +14,14 @@ const chainreaction_router = require('./routers/chain-reaction')
 const cookieParser = require('cookie-parser') 
 /*const graphqlHTTP = require('express-graphql')
 const schema = require('./graphql/schema')*/
-const jwt = require('express-jwt') 
+const jwt = require('express-jwt') git
 
 const socketio = require('socket.io')
 const http = require('http')
+
 const app = express() 
+const server = http.createServer(app)
+const io = socketio(server)
 
 const server = http.createServer(app)
 const io = socketio(server)
@@ -27,6 +36,14 @@ const authmiddleware = jwt({
     secret: process.env.SECRET_KEY,
     credentialsRequired : false
 })
+
+//Setup Admin Panel
+AdminBro.registerAdapter(AdminBroMongoose);
+const adminBro = new AdminBro({
+  resources: [User],
+  rootPath: "/admin",
+});
+const router = AdminBroExpress.buildRouter(adminBro);
 
 // This middleware provides us user as req.user . We can check if user is authenticated by checking for req.user
 app.use(authmiddleware)
@@ -46,6 +63,8 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
 // parses cookies and gives an object req.cookies
 app.use(cookieParser()) 
 
+app.use(adminBro.options.rootPath, router)
+
 app.use(main_router)
 app.use(auth_router)
 app.use(chainreaction_router)
@@ -58,6 +77,5 @@ app.use(chainreaction_router)
     }
 }))
 )*/
-
 
 module.exports = {server, io};
