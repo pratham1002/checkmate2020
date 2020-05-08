@@ -2,7 +2,7 @@ const express = require('express');
 const router = new express.Router();
 const User = require('../models/user');
 const path = require('path') ;
-
+const auth = require("../middleware/auth");
 
 const views = path.join(__dirname, '../../public') ;
 
@@ -41,7 +41,7 @@ router.post("/login", async (req,res) => {
     }
 })
 
-router.post('/logout/', async (req, res)=>{
+router.post('/logout', auth, async (req, res)=>{
 	const user = await User.findById(req.user._id) ;
 	try {
 		user.tokens = user.tokens.filter((token) => token.token!==req.cookies.jwt) ;

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = new express.Router()
 const User = require('../models/user')
-
+const auth = require("../middleware/auth");
 
 router.get('', (req, res)=>{
 	res.render('register')
@@ -20,9 +20,18 @@ router.get('/instructions', (req, res)=>{
 })
 
 
-router.get("/tic-tac-toe", (req,res) => {
-	res.render("tic-tac-toe/index")
+router.get("/tic-tac-toe", auth, (req, res) => {
+	// console.log(req.user)
+	res.render("tic-tac-toe/index", {
+		"user": req.user
+	})
 })
 
+router.get("/me", auth, (req, res) => {
+	res.send({
+		"username": req.user.username,
+		"room": req.user.room,
+	})
+})
 
 module.exports = router 

@@ -357,57 +357,72 @@ function player_change() {
     document.getElementsByClassName('dash0')[0].style.stroke = color[new_player - 1]
 }
 
-const username = String(Math.random()) // for tests only
+const url = "http://localhost:3000/me"  // change to production url later
+var username = ""
+var room = ""
 
-socket.emit('join', username, 'room1', (message) => {   // repalce username and roomname by the res data
-    console.log(message)
-})
+async function play() {
+    await fetch(url).then(async (res) => {
+        const result = await res.json().then((user) => {
+            username = user.username
+            room = user.room
+        })
+    }).then(() => {
+        console.log(username)
+        socket.emit('join', username, 'room1', (message) => {   // repalce roomname by the res data
+            console.log(message)
+        })
 
-window.onclick = e => {
-    if (sendClic) {
-        freezeClic=true
+        window.onclick = e => {
+            if (sendClic) {
+                freezeClic=true
 
-    document.addEventListener("click", freezeClicFn, true);
+                document.addEventListener("click", freezeClicFn, true);
 
-    console.log('frozen')
+                console.log('frozen')
 
-    var current_player = parseInt(document.getElementById('pl-no').innerHTML)
+                var current_player = parseInt(document.getElementById('pl-no').innerHTML)
 
-    if (current_player === opponent)   // replace 1 by opponent user
-        return
+                if (current_player === opponent)   // replace 1 by opponent user
+                    return
 
-    console.log('sending ')
+                console.log('sending ')
 
-    console.log(e.target.id);
-    socket.emit('play', current_player, username, e.target.id, (error) => {
-        if (error) {
-            console.log(error)
+                console.log(e.target.id);
+                socket.emit('play', current_player, username, e.target.id, (error) => {
+                    if (error) {
+                        console.log(error)
+                    }
+                })
+            }
         }
+
+        socket.on('opponentPlayed', (opponentRecieved, divId) => {
+            console.log(divId)
+            divElements = divId.split('')
+            bigRow = parseInt(divElements[0])
+            smallBox = parseInt(divElements[1])
+            smallRow = parseInt(divElements[2])
+            checkColor = false
+            space(parseInt(divElements[3]))
+
+            opponent = opponentRecieved
+            sendClic = false
+            freezeClic = false
+            console.log('unfrozen')
+            // document.removeEventListener('click', DisableClickOnPage.handler, true)
+        })
+
+        function freezeClicFn(e) {
+            if (freezeClic) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        }
+
+    }).catch((e) => {
+            console.log("fetch error")
     })
-    }
 }
 
-socket.on('opponentPlayed', (opponentRecieved, divId) => {
-    console.log(divId)
-    divElements = divId.split('')
-    bigRow = parseInt(divElements[0])
-    smallBox = parseInt(divElements[1])
-    smallRow = parseInt(divElements[2])
-    checkColor = false
-    space(parseInt(divElements[3]))
-
-    opponent = opponentRecieved
-    sendClic = false
-    freezeClic = false
-    console.log('unfrozen')
-    // document.removeEventListener('click', DisableClickOnPage.handler, true)
-})
-
-function freezeClicFn(e) {
-    if (freezeClic) {
-        e.stopPropagation();
-        e.preventDefault();
-    }
-}
-
-// find a way to sync which box is being played
+play()

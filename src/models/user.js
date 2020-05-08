@@ -27,7 +27,11 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
-/*	correctly_answered : [{
+	room: {
+		type: String,
+		default: ""
+	},
+	/*	correctly_answered : [{
 		type: mongoose.Schema.Types.ObjectId,
 	}],*/
 	tokens: [{
