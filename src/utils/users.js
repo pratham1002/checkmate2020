@@ -40,7 +40,7 @@ const addUser = ({ id, username }) => {
         return { user }
     }
     catch (e) {
-        
+        console.log(e)
     }
 }
 

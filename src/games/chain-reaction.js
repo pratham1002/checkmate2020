@@ -1,5 +1,5 @@
-const { io } = require('./app')
-const { addUser, removeUser, getUser, isPaired, getOpponent, getUsersInRoom, getPairedUsers, getUnpairedUsers } = require('./utils/users')
+const { io } = require('../app')
+const { addUser, removeUser, getUser, isPaired, getOpponent, getUsersInRoom, getPairedUsers, getUnpairedUsers } = require('../utils/users')
 
 io.on('connection', (socket) => {
     console.log('Web socket connected')

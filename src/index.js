@@ -1,6 +1,5 @@
 const { server } = require('./app')
 
-require('./chain-reaction')
 require('./games')
 
 const port = process.env.PORT || 3000

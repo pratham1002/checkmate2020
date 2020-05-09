@@ -14,7 +14,7 @@ const chainreaction_router = require('./routers/chain-reaction')
 const cookieParser = require('cookie-parser') 
 /*const graphqlHTTP = require('express-graphql')
 const schema = require('./graphql/schema')*/
-const jwt = require('express-jwt') git
+const jwt = require('express-jwt')
 
 const socketio = require('socket.io')
 const http = require('http')
@@ -23,8 +23,6 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server)
 
-const server = http.createServer(app)
-const io = socketio(server)
 
 const publicDirectoryPath = path.join(__dirname, '../public') 
 
