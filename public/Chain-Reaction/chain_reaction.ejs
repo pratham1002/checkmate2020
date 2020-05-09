@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chain Reaction</title>
+    <link rel="stylesheet" type="text/css" href="/Chain-Reaction/css/chain_reaction.css">
+</head>
+<body>
+    <aside id="modal">
+        <div class="animated_title">
+            CHAIN REACTION
+        </div>
+        <button class="info" onclick="show_instructions()"><em>i</em></button>
+        <div class="how-to-play"><button class="info" onclick="show_instructions()">x</button>
+            <div id="rules_heading">Rules for the Game</div>
+            <ol>
+                <li>The gameplay will take place on an 5x13 board. </li>
+                <li>For each cell in the board, we define a critical mass. The critical mass is equal to the number of orthogonally adjacent cells. That would be 4 for usual cells, 3 for cells in the edge and 2 for cells in the corner.</li>
+                <li>All cells are initially empty. The Red and the Green player take turns to place "orbs" of their corresponding colors. The Red player can only place an (red) orb in an empty cell or a cell which already contains one or more red orbs. When two or more orbs are placed in the same cell, they stack up.</li>
+                <li>When a cell is loaded with a number of orbs equal to its critical mass, the stack immediately explodes. As a result of the explosion, to each of the orthogonally adjacent cells, an orb is added and the initial cell looses as many orbs as its critical mass. The explosions might result in overloading of an adjacent cell and the chain reaction of explosion continues until every cell is stable.</li>
+                <li>When a red cell explodes and there are green cells around, the green cells are converted to red and the other rules of explosions still follow. The same rule is applicable for other color.</li>
+                <li>The winner is the one who eliminates every other player's orbs.</li>
+            </ol>
+        </div>
+
+        <button id=start onclick="start()">START!</button>
+    </aside>
+    <div class="players">
+        <div id="player0_score">0</div>
+        <div id="player1_score">0</div>
+    </div>   
+    <div class="container">
+        
+    </div>
+    <div id="over"><div id="winner"></div><button onclick='restart()'>Play Again!</button></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/Chain-Reaction/js/chain_reaction.js"></script>
+
+</body>
+</html>
