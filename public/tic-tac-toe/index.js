@@ -369,7 +369,7 @@ async function play() {
         })
     }).then(() => {
         console.log(username)
-        socket.emit('join', username, 'room1', (message) => {   // repalce roomname by the res data
+        socket.emit('join-tic-tac-toe', username, 'room1', (message) => {   // repalce roomname by the res data
             console.log(message)
         })
 
@@ -389,7 +389,7 @@ async function play() {
                 console.log('sending ')
 
                 console.log(e.target.id);
-                socket.emit('play', current_player, username, e.target.id, (error) => {
+                socket.emit('play-tic-tac-toe', current_player, username, e.target.id, (error) => {
                     if (error) {
                         console.log(error)
                     }
@@ -397,7 +397,7 @@ async function play() {
             }
         }
 
-        socket.on('opponentPlayed', (opponentRecieved, divId) => {
+        socket.on('opponentPlayed-tic-tac-toe', (opponentRecieved, divId) => {
             console.log(divId)
             divElements = divId.split('')
             bigRow = parseInt(divElements[0])

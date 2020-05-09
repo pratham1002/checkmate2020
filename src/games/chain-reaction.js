@@ -3,16 +3,16 @@ const { addUser, removeUser, getUser, isPaired, getOpponent, getUsersInRoom, get
 
 io.on('connection', (socket) => {
     console.log('Web socket connected')
-    socket.on('join', (options, callback) => {
+    socket.on('join-chain-reaction', (username, callback) => {
         try {
-            const { error, user } = addUser({ id: socket.id, ...options })
+            const { error, user } = addUser({ id: socket.id, username:username })
 
             if (error) {
                 return callback(error)
             }
             
             socket.join(user.room)
-            console.log('Paired', getPairedUsers())
+            console.log('Paired on join', getPairedUsers())
             console.log('Unpaired', getUnpairedUsers())
             callback()
         }

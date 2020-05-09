@@ -404,32 +404,46 @@ function restart(){
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const { username } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+// const { username } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
-socket.emit('join', { username }, (error) => {
-	if (error) {
-		return console.log(error)
-	}
-	console.log("Room Joined")
-	
-})
+const url = "http://localhost:3000/me"  // change to production url later
+var username = ""
 
+async function play() {
+	await fetch(url).then(async (res) => {
+        const result = await res.json().then((user) => {
+            username = user.username
+            room = user.room
+        })
+	}).then(() => {
+		socket.emit('join-chain-reaction', username, (error) => {
+			if (error) {
+				return console.log(error)
+			}
+			console.log("Room Joined")	
+		})
 
-socket.on('move',  (grid, player) => {
-	try {
-		move(grid,'player'+player,false)
-		console.log(count_moves)
-	} catch (e) {
-		console.log(e)
-	}
-})
+		socket.on('move',  (grid, player) => {
+			try {
+				move(grid,'player'+player,false)
+				console.log(count_moves)
+			} catch (e) {
+				console.log(e)
+			}
+		})
 
-socket.on('unfreezeOpponent', () => {
-	console.log("unfreeze, make your move")
-	document.getElementsByClassName('container')[0].style.pointerEvents = "auto";
-})
+		socket.on('unfreezeOpponent', () => {
+			console.log("unfreeze, make your move")
+			document.getElementsByClassName('container')[0].style.pointerEvents = "auto";
+		})
 
-socket.on('freezePlayer', () => {
-	console.log("freeze, waiting for opponent's move")
-	document.getElementsByClassName('container')[0].style.pointerEvents = "none";
-})
+		socket.on('freezePlayer', () => {
+			console.log("freeze, waiting for opponent's move")
+			document.getElementsByClassName('container')[0].style.pointerEvents = "none";
+		})
+	}).catch((e) => {
+            console.log("fetch error")
+    })
+}
+
+play()
