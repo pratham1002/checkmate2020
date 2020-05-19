@@ -61,9 +61,9 @@ start_function = () =>	{
 				let div=document.createElement('div');
 				div.setAttribute('id','r' + row_entry +'c' + col_entry); 
 				div.addEventListener("click",() => {
-					socket.emit('click', div.id, count_moves%total_players, () => {
+					socket.emit('click-chain-reaction', div.id, count_moves%total_players, () => {
 						console.log("move " + valid_move.value)
-						socket.emit('freeze', valid_move.value)
+						socket.emit('freeze-chain-reaction', valid_move.value)
 					})
 					
 					
@@ -85,7 +85,7 @@ function start(){
 	// screen.orientation.lock('landscape');
 
 	let is_paired = false
-	socket.emit('pair', (bool, id) => {
+	socket.emit('pair-chain-reaction', (bool, id) => {
 		opponent.id = id
 		is_paired = bool
 		console.log("Paired ", is_paired)
@@ -335,11 +335,7 @@ function delete_orbs(id,parentDiv,player){
 	}
 ////////////////////////////////////////////////////////////////////////////////
 
-socket.on('start', (opponent_id) => {
-	opponent.id = opponent_id
-	console.log(opponent.id)
-	start_function()
-})
+
 
 ///////////////////////////////////////////////////////////////////////////////
 function check(count_moves,player){
@@ -373,11 +369,11 @@ function check(count_moves,player){
 					console.log(winner)
 					if (winner[0] == '0' && flag == 0) {
 						flag += 1
-						socket.emit('winner', opponent.id, false)
+						socket.emit('winner-chain-reaction', opponent.id, false)
 					}
 					else if (winner[0] == '1' && flag == 0) {
 						flag += 1
-						socket.emit('winner', opponent.id, true)
+						socket.emit('winner-chain-reaction', opponent.id, true)
 					}
 					
 					document.getElementById('winner').innerHTML='Player '+(+winner[0]+1)+' Wins!'
@@ -410,40 +406,58 @@ const url = "http://localhost:3000/me"  // change to production url later
 var username = ""
 
 async function play() {
-	await fetch(url).then(async (res) => {
-        const result = await res.json().then((user) => {
-            username = user.username
-            room = user.room
-        })
-	}).then(() => {
+	try {
+		const res = await fetch(url)
+		const user = await res.json()
+		username = user.username
+		
 		socket.emit('join-chain-reaction', username, (error) => {
 			if (error) {
 				return console.log(error)
 			}
-			console.log("Room Joined")	
+			console.log("Room Joined")
 		})
 
-		socket.on('move',  (grid, player) => {
+		socket.on('start-chain-reaction', (opponent_id) => {
+			opponent.id = opponent_id
+			console.log(opponent.id)
+			start_function()
+		})
+
+		socket.on('move-chain-reaction', (grid, player) => {
 			try {
-				move(grid,'player'+player,false)
+				move(grid, 'player' + player, false)
 				console.log(count_moves)
 			} catch (e) {
 				console.log(e)
 			}
 		})
 
-		socket.on('unfreezeOpponent', () => {
+		socket.on('unfreezeOpponent-chain-reaction', () => {
 			console.log("unfreeze, make your move")
 			document.getElementsByClassName('container')[0].style.pointerEvents = "auto";
 		})
 
-		socket.on('freezePlayer', () => {
+		socket.on('freezePlayer-chain-reaction', () => {
 			console.log("freeze, waiting for opponent's move")
 			document.getElementsByClassName('container')[0].style.pointerEvents = "none";
 		})
-	}).catch((e) => {
-            console.log("fetch error")
-    })
+	}
+	catch (e) {
+		console.log("error")
+	}
 }
 
 play()
+
+	// const res = await fetch(url).then(async (res) => {
+    //     const result = await res.json().then((user) => {
+    //         username = user.username
+    //         room = user.room
+    //     })
+	// }).then(() => {
+		
+	// }).catch((e) => {
+    //         console.log("fetch error")
+    // })
+	// }
