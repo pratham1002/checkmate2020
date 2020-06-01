@@ -30,7 +30,6 @@ router.get("/tic-tac-toe", auth, (req, res) => {
 router.get("/me", auth, (req, res) => {
 	res.send({
 		"username": req.user.username,
-		"room": req.user.room,
 	})
 })
 

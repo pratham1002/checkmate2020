@@ -4,6 +4,7 @@ let checkColor = true
 let opponent
 let freezeClic = false
 let sendClic = false
+let gameStarted = false
 
 let bigRow, smallBox, smallRow, spaces;
 let id_no;
@@ -320,7 +321,7 @@ function check_big_box() {
         }
         alert('Congrats Player-' + player + ' on winning the game.')
 
-        socket.emit('endGame', player)
+        socket.emit('end-tic-tac-toe', player)
 
         document.location.reload(true)
     }
@@ -359,23 +360,39 @@ function player_change() {
 
 const url = "http://localhost:3000/me"  // change to production url later
 var username = ""
-var room = ""
 
 async function play() {
-    await fetch(url).then(async (res) => {
-        const result = await res.json().then((user) => {
-            username = user.username
-            room = user.room
-        })
-    }).then(() => {
-        console.log(username)
-        socket.emit('join', username, 'room1', (message) => {   // repalce roomname by the res data
+    try {
+        const res = await fetch(url)
+        const user = await res.json()
+        username = user.username
+
+        socket.emit('join-tic-tac-toe', username, (message) => { 
             console.log(message)
+            freezeClic = true
+            sendClic = false
+            document.addEventListener("click", freezeClicFn, true);
+
+            console.log('frozen')
         })
 
+        socket.emit('pair-tic-tac-toe', username) // , (bool) => {
+		//     is_paired = bool
+		//     console.log("Paired ", is_paired)
+		//     if (!is_paired) {
+		// 	    console.log("Waiting to pair")
+		//     }
+	    // })
+
+        socket.on('start-tic-tac-toe', () => {
+            console.log('start')
+            freezeClic = false
+            sendClic = true
+        })
+        
         window.onclick = e => {
             if (sendClic) {
-                freezeClic=true
+                freezeClic = true
 
                 document.addEventListener("click", freezeClicFn, true);
 
@@ -389,15 +406,16 @@ async function play() {
                 console.log('sending ')
 
                 console.log(e.target.id);
-                socket.emit('play', current_player, username, e.target.id, (error) => {
+                socket.emit('play-tic-tac-toe', current_player, username, e.target.id, (error) => {
                     if (error) {
                         console.log(error)
                     }
                 })
             }
         }
+        
 
-        socket.on('opponentPlayed', (opponentRecieved, divId) => {
+        socket.on('opponentPlayed-tic-tac-toe', (opponentRecieved, divId) => {
             console.log(divId)
             divElements = divId.split('')
             bigRow = parseInt(divElements[0])
@@ -420,9 +438,10 @@ async function play() {
             }
         }
 
-    }).catch((e) => {
-            console.log("fetch error")
-    })
+    }
+    catch (e) {
+        console.log(error);
+    }
 }
 
 play()

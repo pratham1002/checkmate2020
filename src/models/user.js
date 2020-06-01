@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
 	},
 	room: {
 		type: String,
-		default: ""
+		default: "room1"
 	},
 	/*	correctly_answered : [{
 		type: mongoose.Schema.Types.ObjectId,

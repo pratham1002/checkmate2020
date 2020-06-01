@@ -1,19 +1,30 @@
 const { io } = require('../app')
-const { addUser, removeUser, getUser, isPaired, getOpponent, getUsersInRoom, getPairedUsers, getUnpairedUsers } = require('../utils/users')
+const {
+    addUser,
+    removeUser,
+    getUser,
+    isPaired,
+    getOpponent,
+    getUsersInRoom,
+    getPairedUsers,
+    getUnpairedUsers
+} = require('../utils/chain-reaction-users')
 
 io.on('connection', (socket) => {
     console.log('Web socket connected')
-    socket.on('join', (options, callback) => {
+    socket.on('join-chain-reaction', (username, callback) => {
         try {
-            const { error, user } = addUser({ id: socket.id, ...options })
+            const { error, user } = addUser({ id: socket.id, username:username })
 
             if (error) {
                 return callback(error)
             }
             
             socket.join(user.room)
-            console.log('Paired', getPairedUsers())
+
+            console.log('Paired on join', getPairedUsers())
             console.log('Unpaired', getUnpairedUsers())
+
             callback()
         }
         catch (e) {
@@ -21,13 +32,13 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('pair', (callback) => {
+    socket.on('pair-chain-reaction', (callback) => {
         try {
             if (isPaired(socket.id)) {
                 const opponent = getOpponent(socket.id)
                 callback(true, opponent.id)
-                io.to(opponent.id).emit('start', opponent.id)
-                io.to(opponent.id).emit('freezePlayer')
+                io.to(opponent.id).emit('start-chain-reaction', opponent.id)
+                io.to(opponent.id).emit('freezePlayer-chain-reaction')
                 
             }
             else {
@@ -38,10 +49,10 @@ io.on('connection', (socket) => {
             console.log(e)
         }
     })
-    socket.on('click', (grid, player, callback) => {
+    socket.on('click-chain-reaction', (grid, player, callback) => {
         try {
             const user = getUser(socket.id)
-            io.in(user.room).emit('move', grid, player)
+            io.in(user.room).emit('move-chain-reaction', grid, player)
             callback()
         }
         catch (e) {
@@ -49,12 +60,12 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('freeze', (valid_move) => {
+    socket.on('freeze-chain-reaction', (valid_move) => {
         try {
             if (valid_move) {
                 const user = getUser(socket.id)
-                socket.to(user.room).emit('unfreezeOpponent')
-                io.to(socket.id).emit('freezePlayer')
+                socket.to(user.room).emit('unfreezeOpponent-chain-reaction')
+                io.to(socket.id).emit('freezePlayer-chain-reaction')
             }
             else {
                 console.log("invalid move")
@@ -65,7 +76,7 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('winner', (user, not_opponent) => {
+    socket.on('winner-chain-reaction', (user, not_opponent) => {
         try{        
             if (not_opponent) {
                 const winner = getUser(user)
