@@ -19,6 +19,18 @@ router.get('/instructions', (req, res)=>{
 	res.send("Will render instructions page here....")
 })
 
+router.post("/score", auth, (req, res) => {
+	try {
+		req.user.score = req.user.score + parseInt(req.body.score)
+		req.user.save()
+		res.send({
+			"username": req.user.username,
+			"score": req.user.score
+		})
+	} catch (e) {
+		res.status(500).send(e)
+	}
+})
 
 router.get("/tic-tac-toe", auth, (req, res) => {
 	// console.log(req.user)
