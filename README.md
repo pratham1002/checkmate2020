@@ -1,5 +1,14 @@
 # CHECKMATE-2020
 
+### API Endpoints 
+#### /score 
+- Request: <br />
+Send jwt token along with the score to be updated in JSON
+```
+{
+ "score": 100
+}
+```
 ## Assigned Responsibilities
  - Mention the responsibilities assigned to you in the following format
  - Name : Responsibilities and Assigned Games
