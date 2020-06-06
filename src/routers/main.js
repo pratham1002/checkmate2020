@@ -32,6 +32,14 @@ router.post("/score", auth, (req, res) => {
 	}
 })
 
+
+router.get('/leaderboard', auth, async (req, res) => {
+    const players = await User.find().select("username score").sort({
+        score: -1
+    })
+    res.send(players)
+})
+
 router.get("/tic-tac-toe", auth, (req, res) => {
 	// console.log(req.user)
 	res.render("tic-tac-toe/index", {
