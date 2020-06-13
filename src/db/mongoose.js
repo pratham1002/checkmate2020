@@ -3,8 +3,9 @@ const mongoose = require('mongoose')
 const fs = require('fs')
 const path = require('path')*/
 
+const MONGODB_URL = "mongodb+srv://anshal:anshal@cluster0-vf9ly.mongodb.net/test?retryWrites=true&w=majority";
 
-mongoose.connect(process.env.MONGODB_URL,{
+mongoose.connect(MONGODB_URL,{
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useFindAndModify: false,

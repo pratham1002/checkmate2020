@@ -358,7 +358,7 @@ function player_change() {
     document.getElementsByClassName('dash0')[0].style.stroke = color[new_player - 1]
 }
 
-const url = "http://localhost:3000/me"  // change to production url later
+const url = window.location.origin + "/me" // change to production url later
 var username = ""
 
 async function play() {
